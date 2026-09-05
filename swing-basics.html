@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>前に、真っ直ぐ飛ばす｜基本とミス処方箋</title>
+  <style>
+    :root {
+      --bg: #f3eee4;
+      --ink: #1b241f;
+      --muted: #5d675f;
+      --green: #1c3d32;
+      --green-soft: #2e5b4b;
+      --gold: #c4a35a;
+      --card: #fffdf8;
+      --line: #e3d8c4;
+      --warn: #8a4b2a;
+      --shadow: 0 10px 28px rgba(28, 61, 50, 0.08);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", system-ui, sans-serif;
+      background: radial-gradient(1200px 500px at 10% -10%, #e7efe6 0%, transparent 55%), var(--bg);
+      color: var(--ink);
+      font-size: 18px;
+      line-height: 1.78;
+      padding-bottom: 60px;
+      -webkit-text-size-adjust: 100%;
+    }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 20px 18px 40px; }
+
+    /* ---- 表紙 ---- */
+    header.cover {
+      background: var(--green);
+      color: #f7f3ea;
+      border-radius: 22px;
+      padding: 30px 26px 24px;
+      box-shadow: var(--shadow);
+    }
+    header.cover .kicker {
+      margin: 0 0 10px; letter-spacing: 0.14em; font-size: 12px;
+      color: var(--gold); font-weight: 700;
+    }
+    header.cover h1 { margin: 0 0 12px; font-size: clamp(26px, 5.4vw, 38px); line-height: 1.28; font-weight: 800; }
+    header.cover .lead { margin: 0; color: #dce7e1; font-size: 16px; }
+    header.cover .toc {
+      margin: 20px 0 0; padding: 16px 0 0; border-top: 1px solid rgba(247,243,234,0.22);
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px 18px;
+    }
+    header.cover .toc a { color: #f7f3ea; text-decoration: none; font-size: 15px; display: block; }
+    header.cover .toc a b { color: var(--gold); margin-right: 8px; font-variant-numeric: tabular-nums; }
+
+    nav.jump {
+      position: sticky; top: 0; z-index: 20;
+      display: flex; gap: 8px; overflow-x: auto; padding: 12px 0;
+      background: color-mix(in srgb, var(--bg) 88%, white);
+      backdrop-filter: blur(10px); -webkit-overflow-scrolling: touch;
+    }
+    nav.jump a {
+      flex: 0 0 auto; text-decoration: none; background: var(--card);
+      border: 1px solid var(--line); color: var(--green);
+      border-radius: 999px; padding: 10px 14px; font-size: 14px; font-weight: 700;
+    }
+
+    /* ---- レッスン単位 ---- */
+    section.lesson {
+      background: var(--card); border: 1px solid var(--line); border-radius: 20px;
+      padding: 24px 20px 26px; margin: 18px 0; box-shadow: var(--shadow);
+    }
+    .lesson-no {
+      display: inline-block; background: var(--green); color: var(--gold);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.14em;
+      border-radius: 999px; padding: 4px 14px; margin-bottom: 10px;
+    }
+    h2 { margin: 0 0 8px; font-size: clamp(22px, 4.2vw, 27px); color: var(--green); line-height: 1.35; }
+    .subhead { margin: 0 0 4px; color: var(--muted); font-size: 16px; }
+    h3 {
+      margin: 28px 0 6px; font-size: 19px; color: var(--green-soft);
+      border-left: 4px solid var(--gold); padding-left: 10px;
+    }
+    h4 { margin: 18px 0 2px; font-size: 16px; }
+    p { margin: 8px 0; }
+    .muted { color: var(--muted); }
+
+    /* ---- 図版 ---- */
+    figure { margin: 16px 0 8px; }
+    figure.photo {
+      background: #eee9de; border: 1px solid var(--line);
+      border-radius: 16px; overflow: hidden;
+    }
+    figure.photo img { display: block; width: 100%; height: auto; }
+    figure.illust {
+      background: #f8f4ec; border: 1px solid var(--line);
+      border-radius: 16px; padding: 8px 6px 2px; overflow: hidden;
+    }
+    figure.illust svg { display: block; width: 100%; height: auto; }
+    figcaption { padding: 10px 12px 12px; font-size: 14px; color: var(--muted); }
+    figcaption .label {
+      display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      border-radius: 4px; padding: 1px 7px; margin-right: 8px; vertical-align: 1.5px;
+    }
+    figcaption .label.ph { background: #eee3d2; color: #7a6334; }
+    figcaption .label.il { background: #e2ece5; color: var(--green); }
+    figcaption b { color: var(--ink); }
+    .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0 8px; }
+    .duo figure { margin: 0; }
+
+    /* ---- パーツ ---- */
+    .thought {
+      background: var(--green); color: #f7f3ea; border-radius: 16px;
+      padding: 16px 18px; margin: 16px 0;
+    }
+    .thought small {
+      display: block; color: var(--gold); letter-spacing: 0.08em;
+      font-weight: 700; font-size: 12px; margin-bottom: 4px;
+    }
+    .thought p { margin: 0; font-size: clamp(19px, 3.4vw, 25px); font-weight: 800; line-height: 1.45; }
+    .point {
+      background: #f2f6f1; border: 1px solid #d9e5d8; border-radius: 14px;
+      padding: 14px 16px; margin: 14px 0;
+    }
+    .point .ttl {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+      color: var(--green); display: block; margin-bottom: 4px;
+    }
+    .note {
+      background: #f7f2e8; border-left: 4px solid var(--gold);
+      padding: 12px 14px; border-radius: 0 12px 12px 0; font-size: 15px; margin: 14px 0;
+    }
+    .warn {
+      background: #f8eee6; border-left: 4px solid var(--warn);
+      padding: 12px 14px; border-radius: 0 12px 12px 0; margin: 14px 0;
+    }
+    ul.plain, ol.plain { margin: 6px 0; padding-left: 1.3em; }
+    ul.plain li, ol.plain li { margin: 5px 0; }
+    ul.check { list-style: none; margin: 6px 0; padding: 0; }
+    ul.check li { position: relative; padding-left: 1.6em; margin: 7px 0; }
+    ul.check li::before {
+      content: ""; position: absolute; left: 0; top: 0.55em;
+      width: 10px; height: 10px; border-radius: 3px;
+      border: 2px solid var(--green-soft);
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 15px; margin-top: 8px; }
+    th, td { border-bottom: 1px solid var(--line); text-align: left; padding: 10px 6px; vertical-align: top; }
+    th { color: var(--green); font-size: 13px; }
+    thead tr { background: #f5f0e6; }
+
+    /* ---- ミス処方箋 ---- */
+    .miss {
+      border: 1px solid var(--line); border-radius: 18px;
+      padding: 18px 18px 20px; margin: 18px 0; background: #fdfbf5;
+    }
+    .miss > h3 { margin-top: 0; border-left-color: var(--warn); }
+    .miss .tag {
+      display: inline-block; background: #f0e3d6; color: var(--warn);
+      border-radius: 999px; padding: 2px 12px; font-size: 12px; font-weight: 700;
+    }
+    .miss .symptom { font-size: 15px; color: var(--muted); margin: 8px 0 0; }
+    .setup-fix {
+      background: #eef3ec; border-radius: 14px; padding: 14px 16px; margin-top: 14px;
+    }
+    .setup-fix .ttl {
+      display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+      color: var(--green); margin-bottom: 6px;
+    }
+    .swing-fix {
+      background: #f7f2e8; border-radius: 14px; padding: 14px 16px; margin-top: 10px;
+    }
+    .swing-fix .ttl {
+      display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+      color: #7a6334; margin-bottom: 6px;
+    }
+    footer { text-align: center; color: var(--muted); font-size: 13px; padding: 10px 0 24px; }
+    .backlink { display: inline-block; margin-top: 12px; font-size: 15px; color: var(--green); }
+
+    @media (max-width: 720px) {
+      body { font-size: 17px; }
+      header.cover .toc { grid-template-columns: 1fr; }
+      .duo { grid-template-columns: 1fr; }
+    }
+    @media print {
+      nav.jump { display: none !important; }
+      section.lesson, header.cover { break-inside: avoid; box-shadow: none; }
+      body { background: #fff; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="cover">
+      <p class="kicker">2026.09 ／ 9月20日 朽木地域ゴルフ大会に向けて</p>
+      <h1>前に、真っ直ぐ飛ばす<br />——基本とミス処方箋</h1>
+      <p class="lead">飛距離を出す本ではありません。「当たって、前に、狙った方向へ出る」ための構え・位置関係・スイングと、ダフリ／ゴロ／左右のブレの直し方をまとめた1冊です。</p>
+      <nav class="toc">
+        <a href="#l1"><b>Lesson 1</b>真っ直ぐ飛ぶ順番</a>
+        <a href="#l2"><b>Lesson 2</b>クラブヘッドとボールの位置</a>
+        <a href="#l3"><b>Lesson 3</b>身体とボールの位置関係</a>
+        <a href="#l4"><b>Lesson 4</b>スイングの注意点</a>
+        <a href="#l5"><b>Lesson 5</b>球が曲がる仕組み</a>
+        <a href="#l6"><b>Lesson 6</b>ミス処方箋（4ケース）</a>
+        <a href="#l7"><b>Lesson 7</b>打ちっぱなしでの確認</a>
+      </nav>
+    </header>
+
+    <nav class="jump">
+      <a href="#l1">順番</a>
+      <a href="#l2">ヘッドとボール</a>
+      <a href="#l3">身体の位置</a>
+      <a href="#l4">スイング</a>
+      <a href="#l5">曲がる仕組み</a>
+      <a href="#l6">ミス処方箋</a>
+      <a href="#l7">現場確認</a>
+    </nav>
+
+    <!-- ============ Lesson 1 ============ -->
+    <section class="lesson" id="l1">
+      <span class="lesson-no">LESSON 1</span>
+      <h2>真っ直ぐ飛ぶかは、振る前に決まっている</h2>
+      <p class="subhead">努力する場所を間違えないための優先順位</p>
+
+      <p>「真っ直ぐ飛ばす」と聞くとスイングの話に思えますが、実際に方向を決めているのは<b>打つ前の3つの位置</b>です。順番はこうなります。</p>
+
+      <table>
+        <thead><tr><th>順</th><th>決めること</th><th>効き方</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><b>クラブフェースの向き</b><br />目標線に対して直角に置く</td><td>ボールが最初に出る方向を決める。最重要</td></tr>
+          <tr><td>2</td><td><b>ヘッドとボールの合わせ方</b><br />フェースのどこにボールを合わせるか</td><td>芯を外すと、当たりも方向も弱くなる</td></tr>
+          <tr><td>3</td><td><b>身体の向きとボール位置</b><br />足・腰・肩を目標線と平行に</td><td>向きがズレていれば、良い球でも狙いから外れる</td></tr>
+          <tr><td>4</td><td><b>7割で振り切る</b></td><td>ここで初めてスイングの話になる</td></tr>
+        </tbody>
+      </table>
+
+      <div class="thought">
+        <small>1球ごとに、この順で</small>
+        <p>フェースを合わせる → ヘッドとボールを合わせる → 体を平行に置く → 7割で振り切る</p>
+      </div>
+
+      <h3>構えの向き：同じ点を向かない</h3>
+      <p>ボールと目標を結んだ線に、体を<b>平行</b>に置きます。目標に体を向けようとすると、体は目標より右を向いてしまいます。</p>
+
+      <figure class="illust">
+        <svg viewBox="0 0 700 300" role="img" aria-label="足の線と目標線を平行にする図と、肩を目標に向けてしまう誤りの図">
+          <rect x="0" y="0" width="700" height="300" fill="#f8f4ec" />
+          <text x="20" y="26" font-size="15" font-weight="700" fill="#1c3d32">○ 正しい：2本の線は平行（線路のイメージ）</text>
+          <line x1="30" y1="72" x2="300" y2="72" stroke="#2e5b4b" stroke-width="2" />
+          <polygon points="302,72 288,66 288,78" fill="#2e5b4b" />
+          <circle cx="110" cy="72" r="7" fill="#fff" stroke="#1b241f" stroke-width="2" />
+          <text x="150" y="62" font-size="12" fill="#5d675f">ボールと目標を結ぶ線</text>
+          <line x1="30" y1="124" x2="300" y2="124" stroke="#c4a35a" stroke-width="2" stroke-dasharray="7 5" />
+          <rect x="76" y="112" width="26" height="16" rx="5" fill="#1c3d32" />
+          <rect x="146" y="112" width="26" height="16" rx="5" fill="#1c3d32" />
+          <text x="190" y="142" font-size="12" fill="#5d675f">足・腰・肩を結ぶ線</text>
+          <text x="30" y="176" font-size="13" fill="#1b241f">体の線は目標の「少し左」を向くのが正しい</text>
+          <text x="30" y="198" font-size="13" fill="#1b241f">2本の線は決して交わらない</text>
+
+          <text x="378" y="26" font-size="15" font-weight="700" fill="#8a4b2a">× 誤り：肩を目標に向けてしまう</text>
+          <line x1="390" y1="72" x2="660" y2="72" stroke="#2e5b4b" stroke-width="2" />
+          <polygon points="662,72 648,66 648,78" fill="#2e5b4b" />
+          <circle cx="470" cy="72" r="7" fill="#fff" stroke="#1b241f" stroke-width="2" />
+          <line x1="390" y1="136" x2="660" y2="80" stroke="#8a4b2a" stroke-width="2" stroke-dasharray="7 5" />
+          <rect x="428" y="119" width="26" height="16" rx="5" fill="#8a4b2a" transform="rotate(-11 441 127)" />
+          <rect x="498" y="105" width="26" height="16" rx="5" fill="#8a4b2a" transform="rotate(-11 511 113)" />
+          <text x="390" y="176" font-size="13" fill="#1b241f">体は目標より右を向く</text>
+          <text x="390" y="198" font-size="13" fill="#1b241f">→ 右へ出る、または戻そうとして左へ引っかける</text>
+
+          <text x="20" y="238" font-size="13" fill="#5d675f">※ 上から見た図（右打ち・目標は右方向）</text>
+          <text x="20" y="266" font-size="14" fill="#1c3d32" font-weight="700">手順：ボールの後ろから目標線を決める → フェースを線に合わせる → 最後に足を置く</text>
+          <text x="20" y="288" font-size="13" fill="#5d675f">先に足を決めると向きは合いません。フェースが先です。</text>
+        </svg>
+        <figcaption><span class="label il">ILLUST</span><b>構えの向き。</b>足を先に置くのではなく、フェースを目標線に合わせてから体を平行に置く。</figcaption>
+      </figure>
+    </section>
+
+    <!-- ============ Lesson 2 ============ -->
+    <section class="lesson" id="l2">
+      <span class="lesson-no">LESSON 2</span>
+      <h2>クラブヘッドとボールの位置関係</h2>
+      <p class="subhead">ドライバーとアイアンは、合わせる場所が違う</p>
+
+      <div class="note">
+        <b>用語の整理</b>：ボールを打つ部分が<b>クラブヘッド</b>（「ヘッダ」ではなくヘッドです）。その打面が<b>フェース</b>、フェースの中心が<b>芯（スイートスポット）</b>。ヘッドの先側が<b>トウ</b>、根元側が<b>ヒール</b>、地面に接する下端が<b>リーディングエッジ</b>。以下この呼び方で進めます。
+      </div>
+
+      <h3>ドライバー：ボールはフェースの「上半分」</h3>
+      <p>ドライバーは<b>上がり際</b>で当てるクラブなので、フェースの中心よりやや上で当てるのが正解です。そのためにティーを高くします。</p>
+
+      <figure class="photo">
+        <img src="images/p1-driver-face-ball.png" alt="ドライバーのヘッドを地面に置き、ボールの赤道がヘッド上端と同じ高さになったティーの高さ" />
+        <figcaption><span class="label ph">PHOTO</span><b>これが正しいティーの高さ。</b>ヘッドを地面に置いたとき、ボールの真ん中（赤道）がヘッドの上端と同じ高さ。ボールの上半分がヘッドより上に出る。</figcaption>
+      </figure>
+
+      <figure class="illust">
+        <svg viewBox="0 0 700 300" role="img" aria-label="ティーの高さが低い・適正・高い場合のフェース上の当たる位置と結果">
+          <rect x="0" y="0" width="700" height="300" fill="#f8f4ec" />
+          <text x="20" y="26" font-size="15" font-weight="700" fill="#1c3d32">ティーの高さで、フェースの当たる場所が変わる</text>
+
+          <!-- LOW -->
+          <text x="112" y="58" font-size="14" font-weight="700" fill="#8a4b2a" text-anchor="middle">低すぎる</text>
+          <line x1="30" y1="196" x2="196" y2="196" stroke="#2e5b4b" stroke-width="2.5" />
+          <path d="M52,196 L52,150 Q112,132 172,150 L172,196 Z" fill="#3a4440" />
+          <line x1="112" y1="196" x2="112" y2="186" stroke="#5d675f" stroke-width="3" />
+          <circle cx="112" cy="176" r="12" fill="#fff" stroke="#1b241f" stroke-width="2" />
+          <line x1="100" y1="176" x2="124" y2="176" stroke="#8a4b2a" stroke-width="1.5" stroke-dasharray="3 2" />
+          <text x="112" y="228" font-size="12" fill="#8a4b2a" text-anchor="middle">フェース下部に当たる</text>
+          <text x="112" y="248" font-size="12" fill="#5d675f" text-anchor="middle">低い球・弱い球</text>
+          <text x="112" y="268" font-size="12" fill="#5d675f" text-anchor="middle">上から入るとゴロ</text>
+
+          <!-- OK -->
+          <text x="350" y="58" font-size="14" font-weight="700" fill="#1c3d32" text-anchor="middle">適正</text>
+          <line x1="266" y1="196" x2="434" y2="196" stroke="#2e5b4b" stroke-width="2.5" />
+          <path d="M288,196 L288,150 Q350,132 410,150 L410,196 Z" fill="#3a4440" />
+          <line x1="350" y1="196" x2="350" y2="164" stroke="#5d675f" stroke-width="3" />
+          <circle cx="350" cy="152" r="12" fill="#fff" stroke="#1b241f" stroke-width="2" />
+          <line x1="332" y1="152" x2="368" y2="152" stroke="#c4a35a" stroke-width="2" />
+          <line x1="288" y1="150" x2="412" y2="150" stroke="#c4a35a" stroke-width="1.2" stroke-dasharray="4 3" />
+          <text x="350" y="228" font-size="12" fill="#1c3d32" text-anchor="middle" font-weight="700">赤道＝ヘッド上端</text>
+          <text x="350" y="248" font-size="12" fill="#5d675f" text-anchor="middle">フェース上半分で当たる</text>
+          <text x="350" y="268" font-size="12" fill="#5d675f" text-anchor="middle">高く、前に飛ぶ</text>
+
+          <!-- HIGH -->
+          <text x="588" y="58" font-size="14" font-weight="700" fill="#8a4b2a" text-anchor="middle">高すぎる</text>
+          <line x1="504" y1="196" x2="670" y2="196" stroke="#2e5b4b" stroke-width="2.5" />
+          <path d="M526,196 L526,150 Q588,132 646,150 L646,196 Z" fill="#3a4440" />
+          <line x1="588" y1="196" x2="588" y2="140" stroke="#5d675f" stroke-width="3" />
+          <circle cx="588" cy="128" r="12" fill="#fff" stroke="#1b241f" stroke-width="2" />
+          <text x="588" y="228" font-size="12" fill="#8a4b2a" text-anchor="middle">ヘッド上端をかすめる</text>
+          <text x="588" y="248" font-size="12" fill="#5d675f" text-anchor="middle">高く上がるだけで飛ばない</text>
+          <text x="588" y="268" font-size="12" fill="#5d675f" text-anchor="middle">（いわゆるテンプラ）</text>
+        </svg>
+        <figcaption><span class="label il">ILLUST</span><b>ティー高さ3段の比較。</b>「当たらない」原因が高さにあることは多い。迷ったら赤道＝ヘッド上端に戻す。</figcaption>
+      </figure>
+
+      <h3>アイアン：ボールはフェースの「下半分」、隙間はゼロ</h3>
+      <p>アイアンは地面のボールを<b>下がり際</b>で当てます。ヘッドを地面にぴったり置き、フェースの下半分にボールが接する状態が基準です。</p>
+
+      <figure class="photo">
+        <img src="images/p2-iron-face-ball.png" alt="7番アイアンのリーディングエッジを地面に接地させ、ボールをフェースの下半分に隙間なく合わせた状態" />
+        <figcaption><span class="label ph">PHOTO</span><b>アイアンの基準。</b>リーディングエッジ（下端）が地面に接地。ボールはフェースの下半分に、<b>隙間ほぼゼロ</b>で合わせる。この位置で構えると、振ったときに芯へ戻りやすい。</figcaption>
+      </figure>
+
+      <h3>フェースのどこに当たったかで、球は変わる</h3>
+      <p>芯を外すと、方向も飛距離も落ちます。左右にブレる原因が「振り方」ではなく「当たる場所」の場合があります。</p>
+
+      <figure class="illust">
+        <svg viewBox="0 0 700 320" role="img" aria-label="フェース上の当たる位置と結果の関係">
+          <rect x="0" y="0" width="700" height="320" fill="#f8f4ec" />
+          <text x="20" y="28" font-size="15" font-weight="700" fill="#1c3d32">フェースを正面から見た図（右打ち）</text>
+
+          <!-- face -->
+          <rect x="60" y="60" width="300" height="190" rx="14" fill="#dfd8c8" stroke="#5d675f" stroke-width="2" />
+          <!-- grooves -->
+          <g stroke="#b9b0a0" stroke-width="1.4">
+            <line x1="74" y1="92" x2="346" y2="92" /><line x1="74" y1="112" x2="346" y2="112" />
+            <line x1="74" y1="132" x2="346" y2="132" /><line x1="74" y1="152" x2="346" y2="152" />
+            <line x1="74" y1="172" x2="346" y2="172" /><line x1="74" y1="192" x2="346" y2="192" />
+            <line x1="74" y1="212" x2="346" y2="212" /><line x1="74" y1="232" x2="346" y2="232" />
+          </g>
+          <!-- sweet spot -->
+          <circle cx="210" cy="155" r="22" fill="#c4a35a" opacity="0.4" />
+          <circle cx="210" cy="155" r="7" fill="#1c3d32" />
+          <text x="210" y="150" font-size="0" fill="none">芯</text>
+          <text x="210" y="46" font-size="13" font-weight="700" fill="#1c3d32" text-anchor="middle">芯（スイートスポット）</text>
+          <line x1="210" y1="52" x2="210" y2="132" stroke="#1c3d32" stroke-width="1.2" stroke-dasharray="4 3" />
+          <!-- labels of face parts -->
+          <text x="66" y="272" font-size="12" fill="#5d675f">ヒール（根元側）</text>
+          <text x="354" y="272" font-size="12" fill="#5d675f" text-anchor="end">トウ（先側）</text>
+          <text x="46" y="155" font-size="12" fill="#5d675f" text-anchor="middle" transform="rotate(-90 46 155)">上／下</text>
+
+          <!-- hit spots -->
+          <circle cx="320" cy="155" r="9" fill="#fff" stroke="#8a4b2a" stroke-width="2.5" />
+          <circle cx="100" cy="155" r="9" fill="#fff" stroke="#8a4b2a" stroke-width="2.5" />
+          <circle cx="210" cy="86" r="9" fill="#fff" stroke="#8a4b2a" stroke-width="2.5" />
+          <circle cx="210" cy="228" r="9" fill="#fff" stroke="#8a4b2a" stroke-width="2.5" />
+
+          <!-- legend -->
+          <text x="400" y="80" font-size="14" font-weight="700" fill="#1c3d32">当たった場所と結果</text>
+          <circle cx="410" cy="106" r="7" fill="#1c3d32" />
+          <text x="426" y="111" font-size="13" fill="#1b241f">芯 … 前に、真っ直ぐ、強い球</text>
+          <circle cx="410" cy="138" r="7" fill="#fff" stroke="#8a4b2a" stroke-width="2.5" />
+          <text x="426" y="143" font-size="13" fill="#1b241f">トウ側 … 右へ出る・飛ばない</text>
+          <circle cx="410" cy="170" r="7" fill="#fff" stroke="#8a4b2a" stroke-width="2.5" />
+          <text x="426" y="175" font-size="13" fill="#1b241f">ヒール側 … 左へ出る・飛ばない</text>
+          <circle cx="410" cy="202" r="7" fill="#fff" stroke="#8a4b2a" stroke-width="2.5" />
+          <text x="426" y="207" font-size="13" fill="#1b241f">上部 … アイアンは弱い球／ドライバーは○</text>
+          <circle cx="410" cy="234" r="7" fill="#fff" stroke="#8a4b2a" stroke-width="2.5" />
+          <text x="426" y="239" font-size="13" fill="#1b241f">下部 … 低い球・ゴロになりやすい</text>
+
+          <text x="400" y="274" font-size="12" fill="#5d675f">※ トウ／ヒール当たりは「振り方」より</text>
+          <text x="400" y="292" font-size="12" fill="#5d675f">　「ボールとの距離」が原因のことが多い</text>
+        </svg>
+        <figcaption><span class="label il">ILLUST</span><b>当たる場所と結果。</b>右へ出るならトウ寄り（＝遠すぎる）、左へ出るならヒール寄り（＝近すぎる）を疑う。打つ前に直せる部分。</figcaption>
+      </figure>
+
+      <div class="point">
+        <span class="ttl">CHECK POINT</span>
+        <ul class="check">
+          <li>ドライバー：ボールの赤道がヘッド上端。フェースの<b>上半分</b>に合わせる</li>
+          <li>アイアン：リーディングエッジを地面に。フェースの<b>下半分</b>に隙間なく合わせる</li>
+          <li>どちらも、構えた時点でフェースとボールの間に<b>大きな隙間を作らない</b></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ Lesson 3 ============ -->
+    <section class="lesson" id="l3">
+      <span class="lesson-no">LESSON 3</span>
+      <h2>身体とボールの位置関係</h2>
+      <p class="subhead">覚えるのは「前後」「距離」「前傾」の3つだけ</p>
+
+      <h3>① 前後の位置：クラブで置き場所を変える</h3>
+      <figure class="illust">
+        <svg viewBox="0 0 700 300" role="img" aria-label="上から見たスタンスとクラブ別のボール位置">
+          <rect x="0" y="0" width="700" height="300" fill="#f8f4ec" />
+          <line x1="60" y1="54" x2="638" y2="54" stroke="#2e5b4b" stroke-width="2" />
+          <polygon points="648,54 632,47 632,61" fill="#2e5b4b" />
+          <text x="560" y="42" font-size="13" fill="#2e5b4b" font-weight="700">目標方向</text>
+
+          <line x1="60" y1="112" x2="640" y2="112" stroke="#e3d8c4" stroke-width="2" />
+
+          <circle cx="250" cy="112" r="9" fill="#fff" stroke="#8a4b2a" stroke-width="2.5" />
+          <text x="250" y="94" font-size="13" fill="#8a4b2a" font-weight="700" text-anchor="middle">PW・SW</text>
+          <text x="250" y="142" font-size="12" fill="#5d675f" text-anchor="middle">中央よりやや右</text>
+
+          <circle cx="350" cy="112" r="9" fill="#fff" stroke="#1c3d32" stroke-width="2.5" />
+          <text x="350" y="94" font-size="13" fill="#1c3d32" font-weight="700" text-anchor="middle">7I・8I・9I</text>
+          <text x="350" y="142" font-size="12" fill="#5d675f" text-anchor="middle">スタンス中央</text>
+
+          <circle cx="470" cy="112" r="9" fill="#fff" stroke="#c4a35a" stroke-width="3" />
+          <text x="470" y="94" font-size="13" fill="#a8863c" font-weight="700" text-anchor="middle">ドライバー</text>
+          <text x="470" y="142" font-size="12" fill="#5d675f" text-anchor="middle">左かかとの内側</text>
+
+          <line x1="60" y1="198" x2="640" y2="198" stroke="#c4a35a" stroke-width="2" stroke-dasharray="7 5" />
+          <rect x="222" y="184" width="34" height="22" rx="7" fill="#1c3d32" />
+          <text x="239" y="230" font-size="12" fill="#5d675f" text-anchor="middle">右足</text>
+          <rect x="452" y="184" width="34" height="22" rx="7" fill="#1c3d32" />
+          <text x="469" y="230" font-size="12" fill="#5d675f" text-anchor="middle">左足</text>
+          <line x1="350" y1="178" x2="350" y2="214" stroke="#5d675f" stroke-width="1.5" stroke-dasharray="4 4" />
+          <text x="350" y="230" font-size="12" fill="#5d675f" text-anchor="middle">中央</text>
+
+          <text x="60" y="264" font-size="14" fill="#1b241f"><tspan font-weight="700">スタンス幅</tspan>：アイアンは肩幅。ドライバーは肩幅より少し広め</text>
+          <text x="60" y="286" font-size="13" fill="#5d675f">※ 上から見た図（右打ち）。ドライバーだけ大きく左、他は中央付近。</text>
+        </svg>
+        <figcaption><span class="label il">ILLUST</span><b>クラブ別のボール位置。</b>ドライバーだけ左足寄り。この1点で当たりが変わる。</figcaption>
+      </figure>
+
+      <h3>② 距離と前傾：写真で形を覚える</h3>
+      <div class="duo">
+        <figure class="photo">
+          <img src="images/p3-address-down-the-line.png" alt="後ろから見たアドレス。股関節から前傾し、腕は真下に垂れている" />
+          <figcaption><span class="label ph">PHOTO</span><b>後ろから見た形。</b>股関節から前傾し、背中は丸めない。腕は真下に垂れ、シャフトがボールへ自然に届く距離。</figcaption>
+        </figure>
+        <figure class="photo">
+          <img src="images/p4-address-face-on.png" alt="正面から見たアドレス。ボールはスタンス中央、体重は左右均等" />
+          <figcaption><span class="label ph">PHOTO</span><b>正面から見た形。</b>7番アイアンはボールがスタンス中央。体重は左右5:5。頭は動かさない。</figcaption>
+        </figure>
+      </div>
+
+      <figure class="illust">
+        <svg viewBox="0 0 700 320" role="img" aria-label="横から見たアドレスの前傾と、手と体の間隔の目安">
+          <rect x="0" y="0" width="700" height="320" fill="#f8f4ec" />
+          <line x1="40" y1="272" x2="660" y2="272" stroke="#2e5b4b" stroke-width="2.5" />
+          <circle cx="300" cy="72" r="26" fill="none" stroke="#1c3d32" stroke-width="3" />
+          <line x1="352" y1="176" x2="308" y2="98" stroke="#1c3d32" stroke-width="4" />
+          <circle cx="352" cy="176" r="7" fill="#1c3d32" />
+          <text x="368" y="170" font-size="13" fill="#1c3d32" font-weight="700">股関節から前傾</text>
+          <text x="368" y="190" font-size="12" fill="#5d675f">背中は丸めない。お尻を少し後ろへ</text>
+          <line x1="352" y1="176" x2="336" y2="228" stroke="#1c3d32" stroke-width="4" />
+          <line x1="336" y1="228" x2="344" y2="272" stroke="#1c3d32" stroke-width="4" />
+          <text x="238" y="236" font-size="12" fill="#5d675f" text-anchor="end">膝は軽く緩める程度</text>
+          <line x1="244" y1="232" x2="326" y2="228" stroke="#5d675f" stroke-width="1.2" stroke-dasharray="4 3" />
+          <circle cx="312" cy="112" r="6" fill="#c4a35a" />
+          <line x1="312" y1="112" x2="292" y2="186" stroke="#c4a35a" stroke-width="4" />
+          <text x="196" y="120" font-size="13" fill="#a8863c" font-weight="700">腕は真下に垂らす</text>
+          <text x="196" y="140" font-size="12" fill="#5d675f">引き寄せない・伸ばしすぎない</text>
+          <line x1="286" y1="128" x2="306" y2="120" stroke="#5d675f" stroke-width="1.2" stroke-dasharray="4 3" />
+          <line x1="292" y1="186" x2="212" y2="270" stroke="#1b241f" stroke-width="3" />
+          <circle cx="200" cy="262" r="10" fill="#fff" stroke="#1b241f" stroke-width="2.5" />
+          <line x1="292" y1="200" x2="292" y2="216" stroke="#8a4b2a" stroke-width="1.5" />
+          <line x1="344" y1="200" x2="344" y2="216" stroke="#8a4b2a" stroke-width="1.5" />
+          <line x1="292" y1="208" x2="344" y2="208" stroke="#8a4b2a" stroke-width="2" />
+          <text x="356" y="214" font-size="13" fill="#8a4b2a" font-weight="700">手と体の間は手のひら1枚分</text>
+          <text x="40" y="304" font-size="13" fill="#5d675f">近すぎる＝腕が詰まる／ヒール当たりで左へ　　遠すぎる＝トウ当たりで右へ・トップ</text>
+        </svg>
+        <figcaption><span class="label il">ILLUST</span><b>ボールとの距離の決め方。</b>腕を真下に垂らした位置がグリップの場所。距離が狂うと、当たる場所（トウ・ヒール）も狂う。</figcaption>
+      </figure>
+
+      <div class="point">
+        <span class="ttl">CHECK POINT</span>
+        <ul class="check">
+          <li>ボールとの距離は「腕を垂らして、手と体の間に手のひら1枚」</li>
+          <li>前傾は膝ではなく<b>股関節</b>から。背中は板のように</li>
+          <li>体重はアイアン5:5。ドライバーだけ右足に6:4で右肩が少し下がる</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ Lesson 4 ============ -->
+    <section class="lesson" id="l4">
+      <span class="lesson-no">LESSON 4</span>
+      <h2>スイングの注意点</h2>
+      <p class="subhead">アイアンとドライバーは、当てる場所が正反対</p>
+
+      <figure class="illust">
+        <svg viewBox="0 0 700 300" role="img" aria-label="アイアンはボールの先が最下点、ドライバーはボールの手前が最下点">
+          <rect x="0" y="0" width="700" height="300" fill="#f8f4ec" />
+          <text x="30" y="30" font-size="15" font-weight="700" fill="#1c3d32">アイアン：ボール → 芝 の順（下がり際）</text>
+          <line x1="30" y1="180" x2="330" y2="180" stroke="#2e5b4b" stroke-width="2.5" />
+          <path d="M40,80 Q170,215 320,90" fill="none" stroke="#1c3d32" stroke-width="2.5" stroke-dasharray="6 5" />
+          <circle cx="150" cy="180" r="10" fill="#fff" stroke="#1b241f" stroke-width="2.5" />
+          <text x="150" y="162" font-size="12" fill="#1b241f" text-anchor="middle" font-weight="700">ボール</text>
+          <path d="M162,180 q22,16 44,0" fill="#8a4b2a" opacity="0.35" />
+          <text x="196" y="212" font-size="12" fill="#8a4b2a" font-weight="700">最下点はボールの先</text>
+          <text x="196" y="230" font-size="12" fill="#5d675f">ここで芝を擦る</text>
+          <text x="30" y="258" font-size="13" fill="#1b241f">上げようとしなくても、クラブの角度で球は上がる。</text>
+          <text x="30" y="278" font-size="13" fill="#8a4b2a">上げようとすると最下点が手前に来て、ダフリかゴロ。</text>
+
+          <text x="380" y="30" font-size="15" font-weight="700" fill="#a8863c">ドライバー：最下点 → ボール の順（上がり際）</text>
+          <line x1="380" y1="180" x2="670" y2="180" stroke="#2e5b4b" stroke-width="2.5" />
+          <path d="M390,80 Q505,215 660,110" fill="none" stroke="#c4a35a" stroke-width="2.5" stroke-dasharray="6 5" />
+          <line x1="560" y1="180" x2="560" y2="158" stroke="#5d675f" stroke-width="3" />
+          <circle cx="560" cy="150" r="10" fill="#fff" stroke="#1b241f" stroke-width="2.5" />
+          <text x="560" y="132" font-size="12" fill="#1b241f" text-anchor="middle" font-weight="700">ボール</text>
+          <circle cx="492" cy="196" r="4" fill="#8a4b2a" />
+          <text x="470" y="222" font-size="12" fill="#8a4b2a" font-weight="700" text-anchor="middle">最下点はボールの手前</text>
+          <text x="380" y="258" font-size="13" fill="#1b241f">だからボールは左足寄り、ティーは高め。</text>
+          <text x="380" y="278" font-size="13" fill="#8a4b2a">アイアンと同じ位置に置くと、上から入って低い球やゴロ。</text>
+        </svg>
+        <figcaption><span class="label il">ILLUST</span><b>最下点の違い。</b>「ドライバーが当たらない」原因の多くは、技術ではなくボール位置とティー高さがアイアンのままになっていること。</figcaption>
+      </figure>
+
+      <figure class="photo">
+        <img src="images/p5-divot.png" alt="ボールがあった位置の少し先に、芝を擦った跡が残っている" />
+        <figcaption><span class="label ph">PHOTO</span><b>アイアンの正解の跡。</b>手前（ボールがあった位置）ではなく、その<b>先</b>に芝の跡が残る。手前に跡があればダフリ、跡が出なければトップ。</figcaption>
+      </figure>
+
+      <h3>やってはいけないこと</h3>
+      <table>
+        <thead><tr><th>NG</th><th>起きること</th><th>代わりに</th></tr></thead>
+        <tbody>
+          <tr><td>ボールを上げようとする</td><td>体が右に残り、すくい打ちでダフリ・ゴロ</td><td>上げるのはクラブの仕事。前に飛ばすだけ</td></tr>
+          <tr><td>頭の高さが変わる</td><td>上がればトップ／ゴロ、沈めばダフリ</td><td>打ち終わるまで同じ高さ</td></tr>
+          <tr><td>強く握る</td><td>腕が硬くなりフェースが戻らず右へ</td><td>軽く包む（7月の指の痛みもここが原因の可能性）</td></tr>
+          <tr><td>テークバックが速い</td><td>切り返しで力み、上体が突っ込む</td><td>上げはゆっくり、下ろしは自然に</td></tr>
+          <tr><td>インパクトで手を止める</td><td>手だけで操作して左右にブレる</td><td>胸が目標を向くまで回し切る</td></tr>
+          <tr><td>10割で振る</td><td>体が起き上がって芯を外す</td><td>7割。飛距離は振り切った結果</td></tr>
+        </tbody>
+      </table>
+
+      <figure class="photo">
+        <img src="images/p6-driver-finish.png" alt="力が抜けたまま、左足に体重が乗り、クラブが左肩の上にあるフィニッシュ" />
+        <figcaption><span class="label ph">PHOTO</span><b>目指すフィニッシュ。</b>左足1本で立ち、胸が目標を向き、右かかとが上がった形。ここまで来ていれば、途中で緩んでいない。</figcaption>
+      </figure>
+
+      <div class="thought">
+        <small>迷ったとき戻る場所</small>
+        <p>ゆっくり上げて、7割で、振り切る</p>
+      </div>
+    </section>
+
+    <!-- ============ Lesson 5 ============ -->
+    <section class="lesson" id="l5">
+      <span class="lesson-no">LESSON 5</span>
+      <h2>球が曲がる仕組み</h2>
+      <p class="subhead">「曲がった」のか「真っ直ぐズレた」のかで、対策は別</p>
+
+      <p>曲がりは<b>①フェースの向き</b>と<b>②振る軌道</b>の組み合わせで決まります。まず自分の球がどれかを知ることが対策の入口です。</p>
+
+      <figure class="illust">
+        <svg viewBox="0 0 700 340" role="img" aria-label="ストレート、スライス、プッシュ、引っかけ、フックの球筋">
+          <rect x="0" y="0" width="700" height="340" fill="#f8f4ec" />
+          <circle cx="350" cy="300" r="9" fill="#fff" stroke="#1b241f" stroke-width="2.5" />
+          <line x1="350" y1="300" x2="350" y2="40" stroke="#e3d8c4" stroke-width="2" stroke-dasharray="6 6" />
+          <text x="350" y="330" font-size="12" fill="#5d675f" text-anchor="middle">ボール位置</text>
+          <line x1="350" y1="292" x2="350" y2="66" stroke="#1c3d32" stroke-width="3" />
+          <text x="350" y="52" font-size="13" fill="#1c3d32" font-weight="700" text-anchor="middle">ストレート</text>
+          <path d="M350,292 C338,220 380,140 500,90" fill="none" stroke="#8a4b2a" stroke-width="3" />
+          <text x="512" y="82" font-size="13" fill="#8a4b2a" font-weight="700">スライス</text>
+          <text x="512" y="100" font-size="11" fill="#5d675f">右へ曲がる</text>
+          <line x1="350" y1="292" x2="500" y2="170" stroke="#a8863c" stroke-width="3" />
+          <text x="510" y="172" font-size="13" fill="#a8863c" font-weight="700">プッシュ</text>
+          <text x="510" y="190" font-size="11" fill="#5d675f">真っ直ぐ右へ</text>
+          <line x1="350" y1="292" x2="200" y2="170" stroke="#a8863c" stroke-width="3" />
+          <text x="192" y="172" font-size="13" fill="#a8863c" font-weight="700" text-anchor="end">引っかけ</text>
+          <text x="192" y="190" font-size="11" fill="#5d675f" text-anchor="end">真っ直ぐ左へ</text>
+          <path d="M350,292 C362,220 320,140 200,90" fill="none" stroke="#2e5b4b" stroke-width="3" />
+          <text x="188" y="82" font-size="13" fill="#2e5b4b" font-weight="700" text-anchor="end">フック</text>
+          <text x="188" y="100" font-size="11" fill="#5d675f" text-anchor="end">左へ曲がる</text>
+          <text x="30" y="320" font-size="12" fill="#5d675f">※ 右打ち・後ろから見た図</text>
+        </svg>
+        <figcaption><span class="label il">ILLUST</span><b>5つの球筋。</b>「曲がる」（スライス・フック）と「真っ直ぐズレる」（プッシュ・引っかけ）は原因が別。</figcaption>
+      </figure>
+
+      <table>
+        <thead><tr><th>球筋</th><th>フェースの向き</th><th>振る軌道</th></tr></thead>
+        <tbody>
+          <tr><td><b>ストレート</b></td><td>目標を向いている</td><td>目標線に沿っている</td></tr>
+          <tr><td><b>スライス（右に曲がる）</b></td><td>開いている（右向き）</td><td>外から内へ</td></tr>
+          <tr><td><b>フック（左に曲がる）</b></td><td>閉じている（左向き）</td><td>内から外へ</td></tr>
+          <tr><td><b>プッシュ（真っ直ぐ右）</b></td><td>スクエア</td><td>右方向へ振っている・体の向きが右</td></tr>
+          <tr><td><b>引っかけ（真っ直ぐ左）</b></td><td>閉じている</td><td>外から内へ</td></tr>
+        </tbody>
+      </table>
+
+      <div class="warn">
+        <b>7月の練習メモの「左へのスライス」について</b><br />
+        右打ちのスライスは<b>右へ曲がる</b>球です。左に飛んでいたなら、それは<b>引っかけかフック</b>で、原因も対策も逆になります。<br />
+        当時の対策「狙いを少し右に取る」は左へ出る球には<b>効きません</b>（出球の位置がずれるだけで、曲がりは残る）。明日は<b>左に出たか右に出たか</b>だけメモしてください。それで処方が決まります。
+      </div>
+    </section>
+
+    <!-- ============ Lesson 6 ============ -->
+    <section class="lesson" id="l6">
+      <span class="lesson-no">LESSON 6</span>
+      <h2>ミス処方箋</h2>
+      <p class="subhead">まず「打つ前の位置」を直す。スイングを変えるのは後</p>
+
+      <p>ミスが出たら、いきなり振り方を変えないでください。ダフリも左右のブレも、<b>クラブ・ボール・自分の位置</b>を直すだけで軽くなることが多いためです。各ケースを「打つ前の補正」→「振るときの意識」の順で並べています。</p>
+
+      <!-- ケース1 -->
+      <div class="miss">
+        <span class="tag">ケース1</span>
+        <h3>ダフる（ボールの手前を叩く）</h3>
+        <p class="symptom">手に「ドン」と重い衝撃。マットでは手前を叩いても滑って飛ぶので気づきにくい。</p>
+
+        <h4>原因（多い順）</h4>
+        <ol class="plain">
+          <li><b>ボールを上げようとしてすくっている</b>（最下点がボールより手前に来る）</li>
+          <li><b>体重が右足に残る</b>。振り終わりで体が右に残った形</li>
+          <li>切り返しで<b>上体が突っ込む</b>・右肩が下がって体が沈む</li>
+          <li>ボール位置が右足寄りすぎ、または左すぎ</li>
+          <li>力み（10割）で体が上下に動く</li>
+        </ol>
+
+        <div class="setup-fix">
+          <span class="ttl">打つ前の補正（クラブ・ボール・自分の位置）</span>
+          <ul class="check">
+            <li><b>ボール位置をスタンス中央に戻す</b>。ダフリが続くときは半個分だけ右へ</li>
+            <li><b>ヘッドを地面にぴったり置き直す</b>。浮いた状態で構えると、その分だけ手前を叩く</li>
+            <li>ボールとの距離を確認。<b>遠すぎると届かせようとして上体が突っ込む</b></li>
+            <li>グリップを1cm短く持つ（ヘッドが暴れにくくなる）</li>
+            <li>構えた時点で<b>手がボールより少し前（目標側）</b>にあるか。手が体の後ろにあるとすくい打ちになる</li>
+          </ul>
+        </div>
+        <div class="swing-fix">
+          <span class="ttl">振るときの意識（1つだけ）</span>
+          <p style="margin:0"><b>「ボールの先の地面を擦る」</b>。ボールを打つ意識をやめる。振り終わりは左足に体重を乗せて立つ。</p>
+        </div>
+      </div>
+
+      <!-- ケース2 -->
+      <div class="miss">
+        <span class="tag">ケース2</span>
+        <h3>ゴロになる・トップする（球が上がらない）</h3>
+        <p class="symptom">「カツ」と軽い音で低く転がる。ダフリと逆の現象に見えて、原因は同じ「上げようとする」ことが多い。</p>
+
+        <h4>原因（多い順）</h4>
+        <ol class="plain">
+          <li><b>インパクトで伸び上がる</b>（頭が上がる）→ 球の上側を叩く。最大の原因</li>
+          <li>当てにいって<b>手前で減速</b>し、クラブが下がりきらない</li>
+          <li>上げたい意識で<b>体が右に残り</b>、手だけ先に行く</li>
+          <li>ボール位置が左すぎる（アイアンなのにドライバーの位置）</li>
+          <li>フェースの下部に当たっている（ティーが低い／ボールが遠い）</li>
+        </ol>
+
+        <div class="setup-fix">
+          <span class="ttl">打つ前の補正（クラブ・ボール・自分の位置）</span>
+          <ul class="check">
+            <li><b>ボール位置を左から中央へ戻す</b>（アイアンは必ず中央）</li>
+            <li><b>ボールとの距離を近づける</b>。遠いと届かせようとして体が伸び上がる</li>
+            <li>フェースの<b>下半分にボールが合っているか</b>確認。上半分に合わせて構えていると上側を叩きやすい</li>
+            <li>前傾を作り直す。棒立ちだとクラブが下まで届かない</li>
+            <li>ドライバーなら<b>ティーを少し高く</b>（赤道＝ヘッド上端に戻す）</li>
+          </ul>
+        </div>
+        <div class="swing-fix">
+          <span class="ttl">振るときの意識（1つだけ）</span>
+          <p style="margin:0"><b>「頭の高さを打ち終わるまで変えない」</b>。これだけで多くが直る。当たり始めるまでハーフスイングで。</p>
+        </div>
+      </div>
+
+      <!-- ケース3 -->
+      <div class="miss">
+        <span class="tag">ケース3</span>
+        <h3>右へ流れる（スライス／プッシュ）</h3>
+        <p class="symptom">右へ曲がっていく＝スライス。真っ直ぐ右へ出る＝プッシュ。</p>
+
+        <h4>原因</h4>
+        <ul class="plain">
+          <li><b>スライス</b>：フェースが開いて当たる（腕に力が入って戻らない）／クラブが外から内へ下りる／体だけ先に開く</li>
+          <li><b>プッシュ</b>：体の向きがそもそも右／ボール位置が右すぎ</li>
+          <li>どちらも<b>トウ寄り（先側）に当たっている</b>ことがある＝ボールが遠い</li>
+        </ul>
+
+        <div class="setup-fix">
+          <span class="ttl">打つ前の補正（クラブ・ボール・自分の位置）</span>
+          <ul class="check">
+            <li><b>フェースの向きを置き直す</b>。リーディングエッジが目標線と直角か、上から覗いて確認</li>
+            <li>足元にクラブを1本置き、<b>足の線が目標線と平行</b>か確認（肩が目標を向いていないか）</li>
+            <li><b>ボールとの距離を近づける</b>。トウ当たりが右へのブレを増やす</li>
+            <li>グリップを緩める。左手の甲が少し上を向く程度に握り直す</li>
+            <li>ボール位置が右すぎないか（アイアンは中央）</li>
+          </ul>
+        </div>
+        <div class="swing-fix">
+          <span class="ttl">振るときの意識（1つだけ）</span>
+          <p style="margin:0"><b>「フィニッシュまで胸を回し切る」</b>。回転が止まるとフェースが開いたまま当たる。</p>
+        </div>
+      </div>
+
+      <!-- ケース4 -->
+      <div class="miss">
+        <span class="tag">ケース4</span>
+        <h3>左へ流れる（引っかけ／フック）</h3>
+        <p class="symptom">7月に出ていた可能性が高いのはこちら。真っ直ぐ左へ出る＝引っかけ、左へ曲がる＝フック。</p>
+
+        <h4>原因（多い順）</h4>
+        <ol class="plain">
+          <li><b>手で当てにいってフェースを返しすぎ</b>ている</li>
+          <li>体の回転が<b>インパクトで止まり</b>、腕だけ先に返る</li>
+          <li>クラブが<b>外から内へ</b>下りている（＋フェースが閉じている＝引っかけ）</li>
+          <li>上体から先に打ちに行く（切り返しで肩が突っ込む）</li>
+          <li><b>ヒール寄り（根元側）に当たっている</b>＝ボールが近すぎる／グリップが被っている</li>
+        </ol>
+
+        <div class="setup-fix">
+          <span class="ttl">打つ前の補正（クラブ・ボール・自分の位置）</span>
+          <ul class="check">
+            <li><b>フェースの向きを置き直す</b>。左を向いて（閉じて）置いていないか</li>
+            <li><b>ボールとの距離を少し離す</b>。ヒール当たりが左へのブレを生む</li>
+            <li>グリップを握り直す。<b>左手が被りすぎ（甲が上を向きすぎ）</b>だとフェースが閉じる</li>
+            <li>ボール位置が右すぎないか確認（右すぎると左へ出やすい）</li>
+            <li><b>狙いを右に取る補正はしない</b>。出球がずれるだけで曲がりは直らず、当たりも乱れる</li>
+          </ul>
+        </div>
+        <div class="swing-fix">
+          <span class="ttl">振るときの意識（1つだけ）</span>
+          <p style="margin:0"><b>「腕で振らず、体の回転で運ぶ」</b>。回転を止めないこと。テンポを一定に、7割で。</p>
+        </div>
+      </div>
+
+      <div class="note">
+        <b>直す順番</b>：①打つ前の位置 → ②当たり（ダフリ・ゴロ）→ ③方向（左右）。当たっていないうちに方向を直そうとすると、両方悪くなります。明日は①と②だけで十分です。
+      </div>
+    </section>
+
+    <!-- ============ Lesson 7 ============ -->
+    <section class="lesson" id="l7">
+      <span class="lesson-no">LESSON 7</span>
+      <h2>打ちっぱなしでの確認方法</h2>
+      <p class="subhead">マットは芝と違い、ミスが隠れる</p>
+
+      <table>
+        <thead><tr><th>見るもの</th><th>判定</th></tr></thead>
+        <tbody>
+          <tr><td>手に来る衝撃</td><td>「ドン」と重い＝ダフリ／「カツ」と軽い＝トップ</td></tr>
+          <tr><td>マットの擦り跡</td><td>ボールより手前に跡＝ダフリ／跡が出ない＝トップ気味</td></tr>
+          <tr><td>球の高さ</td><td>低く転がる＝トップ・ゴロ／フワッと上がって飛ばない＝すくい打ち</td></tr>
+          <tr><td>出球の方向</td><td>左か右か。曲がったか、真っ直ぐズレたか</td></tr>
+          <tr><td>当たった場所</td><td>右へ弱い球＝トウ寄り／左へ弱い球＝ヒール寄り</td></tr>
+        </tbody>
+      </table>
+
+      <h3>1つだけやるドリル</h3>
+      <div class="setup-fix">
+        <span class="ttl">目印を擦るドリル</span>
+        <p style="margin:0"><b>ボールの少し先（目標側）に目印を置く</b>（ティー1本など）。「ボールを打つ」ではなく「<b>目印を擦る</b>」意識で振ります。ダフリ・すくい打ち・トップがまとめて軽くなる、今の課題に最も効くドリルです。</p>
+      </div>
+
+      <h3>明日メモすること</h3>
+      <ul class="check">
+        <li>ドライバー：使える球の数（／12）と、<b>左に出たか右に出たか</b></li>
+        <li>7番アイアン：前に飛んだ数（／20）と、<b>ダフリが多いかトップが多いか</b></li>
+        <li>左手の痛みの有無、疲れが出たタイミング</li>
+      </ul>
+
+      <a class="backlink" href="index.html">← 明日の練習メニュー（打ちっぱなしガイド）へ</a>
+    </section>
+
+    <footer>朽木地域ゴルフ大会 2026-09-20 ／ 打つ前の位置 → 当たり → 方向。直すのは1つずつ。</footer>
+  </div>
+</body>
+</html>
