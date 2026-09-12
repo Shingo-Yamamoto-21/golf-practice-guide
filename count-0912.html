@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>2026-09-12 練習カウント</title>
+  <style>
+    :root {
+      --bg: #f3eee4;
+      --ink: #1b241f;
+      --muted: #5d675f;
+      --green: #1c3d32;
+      --card: #fffdf8;
+      --line: #e3d8c4;
+      --gold: #c4a35a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 17px;
+      line-height: 1.5;
+      padding: 16px 14px 40px;
+    }
+    .wrap { max-width: 520px; margin: 0 auto; }
+    header {
+      background: var(--green);
+      color: #f7f3ea;
+      border-radius: 16px;
+      padding: 18px 16px 14px;
+      margin-bottom: 14px;
+    }
+    header h1 { margin: 0 0 4px; font-size: 22px; }
+    header p { margin: 0; color: #dce7e1; font-size: 13px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 14px 12px;
+      margin: 0 0 10px;
+    }
+    .card h2 {
+      margin: 0 0 2px;
+      font-size: 16px;
+      color: var(--green);
+    }
+    .hint { margin: 0 0 10px; font-size: 12px; color: var(--muted); }
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .count {
+      min-width: 96px;
+      text-align: center;
+      background: #f6f1e7;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 8px 6px;
+    }
+    .count strong {
+      display: block;
+      font-size: 34px;
+      line-height: 1.1;
+      color: var(--green);
+      font-variant-numeric: tabular-nums;
+    }
+    .count span { font-size: 12px; color: var(--muted); }
+    button {
+      appearance: none;
+      border: 0;
+      background: var(--green);
+      color: #fff;
+      font: inherit;
+      font-weight: 700;
+      font-size: 22px;
+      border-radius: 12px;
+      min-width: 56px;
+      min-height: 56px;
+      padding: 0 14px;
+    }
+    button.ghost {
+      background: #fff;
+      color: var(--green);
+      border: 1px solid var(--line);
+    }
+    button.danger {
+      background: #fff;
+      color: #8a4b2a;
+      border: 1px solid #e3c9b8;
+      font-size: 14px;
+      min-height: 40px;
+      min-width: auto;
+      width: 100%;
+      margin-top: 8px;
+    }
+    .choices {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .choices label {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #f6f1e7;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 13px;
+    }
+    textarea {
+      width: 100%;
+      min-height: 88px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      font: inherit;
+      padding: 10px;
+      background: #fff;
+    }
+    .summary {
+      margin-top: 4px;
+      font-size: 14px;
+      color: var(--muted);
+      white-space: pre-wrap;
+    }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>9/12 練習カウント</h1>
+      <p>タップで記録。この端末に自動保存されます。</p>
+    </header>
+
+    <section class="card" data-key="iron" data-cap="20">
+      <h2>1. 7番アイアン</h2>
+      <p class="hint">前に飛んだ数 ／20　意識：ボール→マット</p>
+      <div class="row">
+        <div class="count"><strong>0</strong><span>前に飛んだ</span></div>
+        <button type="button" data-act="inc">＋</button>
+        <button type="button" class="ghost" data-act="dec">−</button>
+      </div>
+      <div class="choices" data-note="ironFeel">
+        <label><input type="radio" name="ironFeel" value="ダフリ多め"> ダフリ多め</label>
+        <label><input type="radio" name="ironFeel" value="トップ多め"> トップ多め</label>
+        <label><input type="radio" name="ironFeel" value="どちらでもない"> どちらでもない</label>
+      </div>
+    </section>
+
+    <section class="card" data-key="driver" data-cap="12">
+      <h2>2. ドライバー</h2>
+      <p class="hint">使える球 ／12　意識：7割で振り切る</p>
+      <div class="row">
+        <div class="count"><strong>0</strong><span>使える球</span></div>
+        <button type="button" data-act="inc">＋</button>
+        <button type="button" class="ghost" data-act="dec">−</button>
+      </div>
+      <div class="choices" data-note="driverDir">
+        <label><input type="radio" name="driverDir" value="右"> 右</label>
+        <label><input type="radio" name="driverDir" value="左"> 左</label>
+        <label><input type="radio" name="driverDir" value="混在"> 混在</label>
+      </div>
+    </section>
+
+    <section class="card" data-key="par3" data-cap="8">
+      <h2>3. PAR3想定</h2>
+      <p class="hint">低いティー・7I or 11UT ／8</p>
+      <div class="row">
+        <div class="count"><strong>0</strong><span>前に飛んだ</span></div>
+        <button type="button" data-act="inc">＋</button>
+        <button type="button" class="ghost" data-act="dec">−</button>
+      </div>
+    </section>
+
+    <section class="card" data-key="ut" data-cap="6">
+      <h2>4. 11UT（セカンド）</h2>
+      <p class="hint">前に運べた数 ／6</p>
+      <div class="row">
+        <div class="count"><strong>0</strong><span>前に運べた</span></div>
+        <button type="button" data-act="inc">＋</button>
+        <button type="button" class="ghost" data-act="dec">−</button>
+      </div>
+    </section>
+
+    <section class="card" data-key="approach" data-cap="10">
+      <h2>5. アプローチ</h2>
+      <p class="hint">ゴロになった数 ／10　振り幅は左右対称</p>
+      <div class="row">
+        <div class="count"><strong>0</strong><span>ゴロ</span></div>
+        <button type="button" data-act="inc">＋</button>
+        <button type="button" class="ghost" data-act="dec">−</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>メモ</h2>
+      <p class="hint">痛み・疲れ・気づき</p>
+      <textarea id="memo" placeholder="例：ドライバーは真っ直ぐ右。7Iは後半ダフリ。"></textarea>
+      <button type="button" class="danger" id="reset">すべてリセット</button>
+    </section>
+
+    <section class="card">
+      <h2>今日のまとめ</h2>
+      <div class="summary" id="summary"></div>
+    </section>
+
+    <footer>9/20 地域大会に向けて ／ 意識は1つだけ</footer>
+  </div>
+
+  <script>
+    const KEY = "golf-count-20260912";
+    const defaults = {
+      iron: 0, driver: 0, par3: 0, ut: 0, approach: 0,
+      ironFeel: "", driverDir: "", memo: ""
+    };
+    const state = Object.assign({}, defaults, JSON.parse(localStorage.getItem(KEY) || "{}"));
+
+    function save() {
+      localStorage.setItem(KEY, JSON.stringify(state));
+      render();
+    }
+
+    function render() {
+      document.querySelectorAll(".card[data-key]").forEach((card) => {
+        const key = card.dataset.key;
+        const cap = Number(card.dataset.cap);
+        const label = card.querySelector(".count span");
+        if (!label.dataset.base) label.dataset.base = label.textContent.trim();
+        card.querySelector("strong").textContent = state[key];
+        label.textContent = label.dataset.base + " ／" + cap;
+      });
+
+      document.querySelectorAll('input[type="radio"]').forEach((el) => {
+        el.checked = state[el.name] === el.value;
+      });
+      document.getElementById("memo").value = state.memo || "";
+
+      const lines = [
+        "7I 前に飛んだ: " + state.iron + " / 20" + (state.ironFeel ? "（" + state.ironFeel + "）" : ""),
+        "ドライバー 使える: " + state.driver + " / 12" + (state.driverDir ? "（" + state.driverDir + "）" : ""),
+        "PAR3 前に飛んだ: " + state.par3 + " / 8",
+        "11UT 前に運べた: " + state.ut + " / 6",
+        "アプローチ ゴロ: " + state.approach + " / 10",
+      ];
+      if (state.memo) lines.push("メモ: " + state.memo);
+      document.getElementById("summary").textContent = lines.join("\n");
+    }
+
+    document.querySelectorAll(".card[data-key]").forEach((card) => {
+      card.addEventListener("click", (ev) => {
+        const btn = ev.target.closest("button");
+        if (!btn) return;
+        const key = card.dataset.key;
+        const cap = Number(card.dataset.cap);
+        if (btn.dataset.act === "inc") state[key] = Math.min(cap, state[key] + 1);
+        if (btn.dataset.act === "dec") state[key] = Math.max(0, state[key] - 1);
+        save();
+      });
+    });
+
+    document.querySelectorAll('input[type="radio"]').forEach((el) => {
+      el.addEventListener("change", () => {
+        state[el.name] = el.value;
+        save();
+      });
+    });
+
+    document.getElementById("memo").addEventListener("input", (ev) => {
+      state.memo = ev.target.value;
+      save();
+    });
+
+    document.getElementById("reset").addEventListener("click", () => {
+      if (!confirm("今日のカウントをすべて消しますか？")) return;
+      Object.assign(state, defaults);
+      save();
+    });
+
+    render();
+  </script>
+</body>
+</html>
