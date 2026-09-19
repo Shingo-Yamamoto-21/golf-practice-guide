@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>朽木GC スコアカード 2026-09-20</title>
+  <style>
+    :root {
+      --bg: #eef2ec;
+      --ink: #1b241f;
+      --muted: #5d675f;
+      --green: #1c3d32;
+      --green2: #2e5b4b;
+      --card: #fffdf8;
+      --line: #d7e0d4;
+      --gold: #c4a35a;
+      --warn: #8a4b2a;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.5;
+      padding-bottom: calc(88px + var(--safe-bottom));
+    }
+    .wrap { max-width: 480px; margin: 0 auto; padding: 12px 12px 0; }
+    header.bar {
+      background: var(--green);
+      color: #f7f3ea;
+      border-radius: 16px;
+      padding: 14px 14px 12px;
+      margin-bottom: 10px;
+    }
+    header.bar .kicker {
+      margin: 0 0 2px; font-size: 11px; letter-spacing: .12em;
+      color: var(--gold); font-weight: 700;
+    }
+    header.bar h1 { margin: 0 0 6px; font-size: 20px; line-height: 1.3; }
+    .totals {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+    }
+    .tot {
+      background: rgba(255,255,255,.1); border-radius: 10px; padding: 8px 6px; text-align: center;
+    }
+    .tot b { display: block; font-size: 22px; font-variant-numeric: tabular-nums; line-height: 1.1; }
+    .tot span { font-size: 11px; color: #c5d5cc; }
+    .screen { display: none; }
+    .screen.on { display: block; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+    .card h2 { margin: 0 0 8px; font-size: 17px; color: var(--green); }
+    .muted { color: var(--muted); font-size: 13px; }
+    .start-grid { display: grid; gap: 10px; }
+    button.big {
+      appearance: none; border: 0; width: 100%;
+      background: var(--green); color: #fff;
+      font: inherit; font-weight: 700; font-size: 18px;
+      border-radius: 14px; padding: 18px 14px; text-align: left;
+    }
+    button.big small { display: block; font-weight: 500; font-size: 13px; color: #c5d5cc; margin-top: 4px; }
+    button.secondary {
+      appearance: none; width: 100%;
+      background: #fff; color: var(--green);
+      border: 1px solid var(--line); border-radius: 12px;
+      font: inherit; font-weight: 700; padding: 12px; margin-top: 8px;
+    }
+    .toggle-row {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; padding: 10px 0 0;
+    }
+    .toggle-row label { font-size: 14px; }
+    input[type="checkbox"] { width: 22px; height: 22px; }
+
+    .hole-head {
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;
+    }
+    .hole-head h2 { margin: 0; font-size: 28px; color: var(--green); }
+    .badge {
+      background: #eef3ec; color: var(--green2);
+      border-radius: 999px; padding: 4px 10px; font-size: 13px; font-weight: 700;
+      white-space: nowrap;
+    }
+    .meta { margin: 6px 0 0; font-size: 13px; color: var(--muted); }
+    .advice {
+      background: #f4f7f2; border-left: 4px solid var(--gold);
+      border-radius: 0 10px 10px 0; padding: 10px 12px; margin: 12px 0;
+      font-size: 14px;
+    }
+    .advice .ttl { display: block; font-size: 11px; font-weight: 700; letter-spacing: .08em; color: var(--green); margin-bottom: 4px; }
+    .counter-block { margin-top: 8px; }
+    .counter-block .label {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 8px; font-size: 14px; font-weight: 700; color: var(--green);
+    }
+    .counter-block .label em { font-style: normal; font-weight: 500; color: var(--muted); font-size: 12px; }
+    .counter {
+      display: grid; grid-template-columns: 1fr 1.2fr 1fr; gap: 8px; align-items: center;
+    }
+    .counter button {
+      appearance: none; border: 0; border-radius: 14px;
+      min-height: 64px; font-size: 32px; font-weight: 700;
+      background: var(--green); color: #fff;
+    }
+    .counter button.minus {
+      background: #fff; color: var(--green); border: 1px solid var(--line);
+    }
+    .counter .val {
+      text-align: center; background: #f6f1e7; border: 1px solid var(--line);
+      border-radius: 14px; padding: 10px 6px; min-height: 64px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .counter .val strong {
+      font-size: 36px; line-height: 1; font-variant-numeric: tabular-nums; color: var(--green);
+    }
+    .counter .val span { font-size: 12px; color: var(--muted); }
+    .putt-block { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--line); }
+    .putt-block.off { display: none; }
+    .putt-block .counter button { min-height: 52px; font-size: 26px; }
+    .putt-block .counter .val { min-height: 52px; }
+    .putt-block .counter .val strong { font-size: 28px; }
+    .note-putt {
+      margin: 8px 0 0; font-size: 12px; color: var(--muted);
+    }
+
+    .nav-fixed {
+      position: fixed; left: 0; right: 0; bottom: 0;
+      background: color-mix(in srgb, var(--bg) 92%, white);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid var(--line);
+      padding: 10px 12px calc(10px + var(--safe-bottom));
+      z-index: 30;
+    }
+    .nav-fixed .inner {
+      max-width: 480px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1.4fr 1fr; gap: 8px;
+    }
+    .nav-fixed button {
+      appearance: none; border: 0; border-radius: 12px;
+      min-height: 48px; font: inherit; font-weight: 700;
+      background: var(--green); color: #fff;
+    }
+    .nav-fixed button.ghost {
+      background: #fff; color: var(--green); border: 1px solid var(--line);
+    }
+    .nav-fixed button:disabled { opacity: .4; }
+
+    table.score {
+      width: 100%; border-collapse: collapse; font-size: 13px;
+    }
+    table.score th, table.score td {
+      border-bottom: 1px solid var(--line);
+      padding: 8px 4px; text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+    table.score th { color: var(--green); font-size: 11px; }
+    table.score td.hole { text-align: left; font-weight: 700; color: var(--green); }
+    table.score tr.current { background: #eef3ec; }
+    table.score .diff-plus { color: var(--warn); }
+    table.score .diff-minus { color: #1f7a43; }
+    .rules {
+      font-size: 14px; margin: 0; padding-left: 1.2em;
+    }
+    .rules li { margin: 6px 0; }
+    .danger {
+      width: 100%; appearance: none; background: #fff; color: var(--warn);
+      border: 1px solid #e3c9b8; border-radius: 12px;
+      font: inherit; font-weight: 700; padding: 12px; margin-top: 8px;
+    }
+    .progress {
+      display: flex; gap: 4px; flex-wrap: wrap; margin: 8px 0 0;
+    }
+    .progress i {
+      width: 18px; height: 18px; border-radius: 5px;
+      background: #dfe7dc; font-style: normal; font-size: 10px;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--muted); font-weight: 700;
+    }
+    .progress i.done { background: var(--green); color: #fff; }
+    .progress i.now { outline: 2px solid var(--gold); outline-offset: 1px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="bar">
+      <p class="kicker">2026.09.20 ／ 朽木地域ゴルフ大会</p>
+      <h1>朽木GC スコアカード</h1>
+      <div class="totals">
+        <div class="tot"><b id="sumOut">—</b><span>OUT</span></div>
+        <div class="tot"><b id="sumIn">—</b><span>IN</span></div>
+        <div class="tot"><b id="sumAll">—</b><span>TOTAL</span></div>
+      </div>
+    </header>
+
+    <!-- START -->
+    <section id="screen-start" class="screen on">
+      <div class="card">
+        <h2>スタートを選ぶ</h2>
+        <p class="muted">どちらから回ってもOK。途中で一覧からホール移動もできます。</p>
+        <div class="start-grid" style="margin-top:12px">
+          <button type="button" class="big" id="startOut">OUTスタート（1番）
+            <small>1〜9 → 10〜18</small>
+          </button>
+          <button type="button" class="big" id="startIn">INスタート（10番）
+            <small>10〜18 → 1〜9</small>
+          </button>
+        </div>
+        <div class="toggle-row">
+          <label for="puttMode">パットも別カウントする</label>
+          <input type="checkbox" id="puttMode" />
+        </div>
+        <p class="muted">おすすめ：本番中はOFF。打数だけ確実に。余力があればON。</p>
+      </div>
+      <div class="card">
+        <h2>当日ルール（頭に入れるのはこれだけ）</h2>
+        <ol class="rules">
+          <li>1打目は<strong>ドライバー</strong>（たまに右でも可）</li>
+          <li>セカンドの長い距離は<strong>11UT優先</strong></li>
+          <li>迷ったら<strong>7Iで刻む</strong>。1ホールは+3で止める</li>
+          <li>アプローチは上げず、<strong>小さく左右対称</strong></li>
+        </ol>
+      </div>
+      <div class="card" id="resumeCard" style="display:none">
+        <h2>前回の記録あり</h2>
+        <p class="muted" id="resumeText"></p>
+        <button type="button" class="secondary" id="resumeBtn">続きから開く</button>
+        <button type="button" class="danger" id="resetBtn">記録を消して最初から</button>
+      </div>
+    </section>
+
+    <!-- PLAY -->
+    <section id="screen-play" class="screen">
+      <div class="card">
+        <div class="hole-head">
+          <div>
+            <h2 id="holeTitle">H1</h2>
+            <p class="meta" id="holeMeta"></p>
+          </div>
+          <span class="badge" id="holeSide">OUT</span>
+        </div>
+        <div class="progress" id="progress"></div>
+        <div class="advice">
+          <span class="ttl">ADVICE</span>
+          <div id="holeAdvice"></div>
+        </div>
+
+        <div class="counter-block">
+          <div class="label">打数 <em>パーとの差は自動表示</em></div>
+          <div class="counter">
+            <button type="button" class="minus" data-field="strokes" data-act="dec">−</button>
+            <div class="val"><strong id="strokesVal">0</strong><span id="strokesDiff">vs Par</span></div>
+            <button type="button" data-field="strokes" data-act="inc">＋</button>
+          </div>
+        </div>
+
+        <div class="putt-block" id="puttBlock">
+          <div class="label" style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;font-size:14px;font-weight:700;color:var(--green)">
+            パット <em style="font-style:normal;font-weight:500;color:var(--muted);font-size:12px">任意・忘れても打数は残る</em>
+          </div>
+          <div class="counter">
+            <button type="button" class="minus" data-field="putts" data-act="dec">−</button>
+            <div class="val"><strong id="puttsVal">0</strong><span>パット</span></div>
+            <button type="button" data-field="putts" data-act="inc">＋</button>
+          </div>
+          <p class="note-putt">運用のコツ：グリーンに乗ってからだけ数える。迷ったら打数優先でOK。</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <button type="button" class="secondary" id="toList">ホール一覧・合計を見る</button>
+        <button type="button" class="secondary" id="toStartMenu">スタート画面へ</button>
+      </div>
+    </section>
+
+    <!-- LIST -->
+    <section id="screen-list" class="screen">
+      <div class="card">
+        <h2>スコア一覧</h2>
+        <p class="muted" id="listSummary"></p>
+        <table class="score">
+          <thead>
+            <tr><th>H</th><th>Par</th><th>打</th><th>±</th><th>P</th></tr>
+          </thead>
+          <tbody id="scoreBody"></tbody>
+        </table>
+      </div>
+      <div class="card">
+        <button type="button" class="secondary" id="backPlay">いまのホールに戻る</button>
+        <button type="button" class="danger" id="resetBtn2">記録をリセット</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="nav-fixed" id="playNav" style="display:none">
+    <div class="inner">
+      <button type="button" class="ghost" id="prevHole">前へ</button>
+      <button type="button" id="nextHole">次のホール</button>
+      <button type="button" class="ghost" id="openList">一覧</button>
+    </div>
+  </div>
+
+  <script>
+    const HOLES = [
+      { n:1,  side:"OUT", par:4, yds:352, note:"第2打打ち上げ。1〜2番手大きめ", tip:"ティーはドライバー可。セカンドは11UT/7Iで刻む。打ち上げ分はクラブを大きめに。" },
+      { n:2,  side:"OUT", par:5, yds:478, note:"右に谷。第1打は左", tip:"谷を狙わない。ドライバーは左へ。その後は11UT/7Iで3〜4打かけて前進。" },
+      { n:3,  side:"OUT", par:3, yds:140, note:"やや打ち上げ・3段グリーン", tip:"7Iで手前OK。乗らなくても寄せ勝負。欲張らない。" },
+      { n:4,  side:"OUT", par:4, yds:320, note:"短いPAR4", tip:"ドライバーか7I。短いので刻んで大叩き回避。パー〜ボギーで十分。" },
+      { n:5,  side:"OUT", par:4, yds:361, note:"最難関Hdcp1。右OB", tip:"右OB厳禁。ティーは左寄りに確実に。ボギー以上で割り切る。" },
+      { n:6,  side:"OUT", par:4, yds:362, note:"打ち下ろし左ドッグレッグ", tip:"正面方向へ。グリーン手前バンカー回避。手前から寄せる。" },
+      { n:7,  side:"OUT", par:3, yds:185, note:"長いショート。左OB近い", tip:"届かせにいかずドライバー or 11UTで手前。左避けて右。3打で乗ればOK。" },
+      { n:8,  side:"OUT", par:4, yds:317, note:"名物。右クロスバンカー", tip:"短い。11UT/7Iで右バンカーの左へ。刻んでパー〜ボギー。" },
+      { n:9,  side:"OUT", par:5, yds:523, note:"池あり。クラブハウス目標", tip:"池は越えず手前レイアップ。11UT/7Iで確実に。池の前で止める。" },
+      { n:10, side:"IN",  par:4, yds:369, note:"右斜面の裾が狙い目", tip:"ティーはドライバー可。右斜面裾方向。セカンドは7I/11UTで刻む。" },
+      { n:11, side:"IN",  par:4, yds:370, note:"右はグリーンまでOB", tip:"右OB厳禁。ティーは左寄り。終始左を意識して刻む。" },
+      { n:12, side:"IN",  par:3, yds:156, note:"風・手前の谷。オーバー目安全", tip:"不安なら11UTで手前。7Iは感触が良いときだけ。乗ったら2パット意識。" },
+      { n:13, side:"IN",  par:4, yds:311, note:"短い。2段グリーン", tip:"ティーは7IでFWへ。ピン位置確認。奥より手前。" },
+      { n:14, side:"IN",  par:4, yds:376, note:"左右OB・タイト", tip:"飛距離捨てる。真っ直ぐ前へ。7I中心で大叩き回避。" },
+      { n:15, side:"IN",  par:5, yds:473, note:"左目フェアウェイ", tip:"左目狙い。11UT/7Iで3〜4打。無理に2オンしない。" },
+      { n:16, side:"IN",  par:3, yds:124, note:"右山裾。ショート厳禁", tip:"短くても届かせる（8I〜7I）。右山裾方向。" },
+      { n:17, side:"IN",  par:4, yds:346, note:"バーディーチャンス。奥注意", tip:"ドライバー→7I。奥に外さない。手前から寄せる。" },
+      { n:18, side:"IN",  par:4, yds:355, note:"手前に池・右OB", tip:"第2打は池の手前にレイアップ→3打目。右OB回避。" }
+    ];
+
+    const KEY = "kuchiki-score-20260920";
+    const defaultState = () => ({
+      order: "OUT",          // OUT | IN
+      idx: 0,                // index in playOrder
+      puttMode: false,
+      holes: Object.fromEntries(HOLES.map(h => [h.n, { strokes: 0, putts: 0, touched: false }]))
+    });
+
+    let state = load();
+
+    function load() {
+      try {
+        const raw = JSON.parse(localStorage.getItem(KEY) || "null");
+        if (!raw) return defaultState();
+        const base = defaultState();
+        return Object.assign(base, raw, {
+          holes: Object.assign(base.holes, raw.holes || {})
+        });
+      } catch (e) {
+        return defaultState();
+      }
+    }
+    function save() {
+      localStorage.setItem(KEY, JSON.stringify(state));
+      renderTotals();
+    }
+
+    function playOrder() {
+      const out = HOLES.filter(h => h.side === "OUT");
+      const inn = HOLES.filter(h => h.side === "IN");
+      return state.order === "IN" ? inn.concat(out) : out.concat(inn);
+    }
+    function currentHole() {
+      return playOrder()[state.idx];
+    }
+    function holeData(n) {
+      return state.holes[n];
+    }
+
+    function sumSide(side) {
+      return HOLES.filter(h => h.side === side).reduce((a, h) => {
+        const d = holeData(h.n);
+        return a + (d.touched ? d.strokes : 0);
+      }, 0);
+    }
+    function countTouched(side) {
+      return HOLES.filter(h => h.side === side && holeData(h.n).touched).length;
+    }
+    function parSide(side) {
+      return HOLES.filter(h => h.side === side).reduce((a, h) => a + h.par, 0);
+    }
+
+    function renderTotals() {
+      const outN = countTouched("OUT");
+      const inN = countTouched("IN");
+      const out = sumSide("OUT");
+      const inn = sumSide("IN");
+      document.getElementById("sumOut").textContent = outN ? out : "—";
+      document.getElementById("sumIn").textContent = inN ? inn : "—";
+      document.getElementById("sumAll").textContent = (outN || inN) ? (out + inn) : "—";
+    }
+
+    function showScreen(name) {
+      document.querySelectorAll(".screen").forEach(el => el.classList.remove("on"));
+      document.getElementById("screen-" + name).classList.add("on");
+      document.getElementById("playNav").style.display = name === "play" ? "block" : "none";
+    }
+
+    function diffLabel(strokes, par) {
+      if (!strokes) return "未記録";
+      const d = strokes - par;
+      if (d === 0) return "パー";
+      if (d > 0) return "+" + d;
+      return String(d);
+    }
+
+    function renderPlay() {
+      const h = currentHole();
+      const d = holeData(h.n);
+      document.getElementById("holeTitle").textContent = "H" + h.n;
+      document.getElementById("holeSide").textContent = h.side;
+      document.getElementById("holeMeta").textContent =
+        "Par " + h.par + " ／ " + h.yds + "Y（WHITE目安） ／ " + h.note;
+      document.getElementById("holeAdvice").textContent = h.tip;
+
+      const strokes = d.strokes || 0;
+      document.getElementById("strokesVal").textContent = strokes;
+      document.getElementById("strokesDiff").textContent = diffLabel(strokes, h.par);
+      document.getElementById("puttsVal").textContent = d.putts || 0;
+
+      const puttOn = !!state.puttMode;
+      document.getElementById("puttBlock").classList.toggle("off", !puttOn);
+
+      const order = playOrder();
+      const prog = document.getElementById("progress");
+      prog.innerHTML = order.map((hole, i) => {
+        const done = holeData(hole.n).touched ? "done" : "";
+        const now = i === state.idx ? "now" : "";
+        return "<i class=\"" + done + " " + now + "\">" + hole.n + "</i>";
+      }).join("");
+
+      document.getElementById("prevHole").disabled = state.idx <= 0;
+      document.getElementById("nextHole").textContent =
+        state.idx >= order.length - 1 ? "完了・一覧" : "次のホール";
+
+      renderTotals();
+      showScreen("play");
+    }
+
+    function renderList() {
+      const cur = currentHole() ? currentHole().n : null;
+      const body = document.getElementById("scoreBody");
+      const order = playOrder();
+      let html = "";
+      let puttSum = 0;
+      let puttHoles = 0;
+
+      function rows(list, label) {
+        html += "<tr><td colspan=\"5\" style=\"text-align:left;color:#5d675f;font-size:11px;padding-top:12px\">" + label + "</td></tr>";
+        list.forEach(h => {
+          const d = holeData(h.n);
+          const st = d.touched ? d.strokes : "—";
+          const diff = d.touched ? (d.strokes - h.par) : "";
+          const diffCls = diff > 0 ? "diff-plus" : (diff < 0 ? "diff-minus" : "");
+          const diffTxt = diff === "" ? "—" : (diff > 0 ? "+" + diff : String(diff));
+          const pt = (state.puttMode && d.touched) ? d.putts : "—";
+          if (state.puttMode && d.touched) { puttSum += d.putts; puttHoles++; }
+          html += "<tr class=\"" + (h.n === cur ? "current" : "") + "\" data-jump=\"" + h.n + "\">" +
+            "<td class=\"hole\">" + h.n + "</td>" +
+            "<td>" + h.par + "</td>" +
+            "<td>" + st + "</td>" +
+            "<td class=\"" + diffCls + "\">" + diffTxt + "</td>" +
+            "<td>" + pt + "</td></tr>";
+        });
+        const sub = list.reduce((a, h) => a + (holeData(h.n).touched ? holeData(h.n).strokes : 0), 0);
+        const subPar = list.reduce((a, h) => a + h.par, 0);
+        const touched = list.filter(h => holeData(h.n).touched).length;
+        html += "<tr><td class=\"hole\">計</td><td>" + subPar + "</td><td>" + (touched ? sub : "—") + "</td><td colspan=\"2\"></td></tr>";
+      }
+
+      rows(order.filter(h => h.side === (state.order === "IN" ? "IN" : "OUT")), state.order === "IN" ? "先半（IN）" : "先半（OUT）");
+      rows(order.filter(h => h.side === (state.order === "IN" ? "OUT" : "IN")), state.order === "IN" ? "後半（OUT）" : "後半（IN）");
+
+      body.innerHTML = html;
+      const out = sumSide("OUT");
+      const inn = sumSide("IN");
+      const all = out + inn;
+      const puttLine = state.puttMode && puttHoles
+        ? " ／ パット計 " + puttSum + "（" + puttHoles + "H）"
+        : "";
+      document.getElementById("listSummary").textContent =
+        "OUT " + (countTouched("OUT") ? out : "—") +
+        " ／ IN " + (countTouched("IN") ? inn : "—") +
+        " ／ 合計 " + ((countTouched("OUT") || countTouched("IN")) ? all : "—") +
+        "（パー72）" + puttLine;
+
+      body.querySelectorAll("tr[data-jump]").forEach(tr => {
+        tr.addEventListener("click", () => {
+          const n = Number(tr.dataset.jump);
+          const order = playOrder();
+          const idx = order.findIndex(h => h.n === n);
+          if (idx >= 0) { state.idx = idx; save(); renderPlay(); }
+        });
+      });
+
+      renderTotals();
+      showScreen("list");
+    }
+
+    function changeField(field, act) {
+      const h = currentHole();
+      const d = holeData(h.n);
+      if (field === "strokes") {
+        if (act === "inc") d.strokes = Math.min(20, (d.strokes || 0) + 1);
+        if (act === "dec") d.strokes = Math.max(0, (d.strokes || 0) - 1);
+        d.touched = d.strokes > 0;
+        if (!d.touched) d.putts = 0;
+      }
+      if (field === "putts") {
+        if (act === "inc") d.putts = Math.min(10, (d.putts || 0) + 1);
+        if (act === "dec") d.putts = Math.max(0, (d.putts || 0) - 1);
+        // パットだけ押してもホール開始扱いにしない（打数が本体）
+      }
+      save();
+      renderPlay();
+    }
+
+    function start(order) {
+      state.order = order;
+      state.idx = 0;
+      state.puttMode = document.getElementById("puttMode").checked;
+      save();
+      renderPlay();
+    }
+
+    function resetAll() {
+      if (!confirm("本日のスコア記録をすべて消しますか？")) return;
+      state = defaultState();
+      document.getElementById("puttMode").checked = false;
+      save();
+      showStart();
+    }
+
+    function showStart() {
+      const touched = HOLES.some(h => holeData(h.n).touched);
+      const card = document.getElementById("resumeCard");
+      card.style.display = touched ? "block" : "none";
+      if (touched) {
+        document.getElementById("resumeText").textContent =
+          "OUT " + (countTouched("OUT") ? sumSide("OUT") : "—") +
+          " / IN " + (countTouched("IN") ? sumSide("IN") : "—") +
+          " / 合計 " + (sumSide("OUT") + sumSide("IN")) +
+          " ／ " + (state.order === "IN" ? "IN" : "OUT") + "スタート";
+        document.getElementById("puttMode").checked = !!state.puttMode;
+      }
+      renderTotals();
+      showScreen("start");
+    }
+
+    // events
+    document.getElementById("startOut").addEventListener("click", () => start("OUT"));
+    document.getElementById("startIn").addEventListener("click", () => start("IN"));
+    document.getElementById("resumeBtn").addEventListener("click", () => renderPlay());
+    document.getElementById("resetBtn").addEventListener("click", resetAll);
+    document.getElementById("resetBtn2").addEventListener("click", resetAll);
+    document.getElementById("puttMode").addEventListener("change", (e) => {
+      state.puttMode = e.target.checked;
+      save();
+    });
+
+    document.querySelectorAll("#screen-play .counter button").forEach(btn => {
+      btn.addEventListener("click", () => changeField(btn.dataset.field, btn.dataset.act));
+    });
+
+    document.getElementById("prevHole").addEventListener("click", () => {
+      if (state.idx > 0) { state.idx--; save(); renderPlay(); }
+    });
+    document.getElementById("nextHole").addEventListener("click", () => {
+      const order = playOrder();
+      if (state.idx >= order.length - 1) { renderList(); return; }
+      state.idx++;
+      save();
+      renderPlay();
+    });
+    document.getElementById("openList").addEventListener("click", renderList);
+    document.getElementById("toList").addEventListener("click", renderList);
+    document.getElementById("backPlay").addEventListener("click", renderPlay);
+    document.getElementById("toStartMenu").addEventListener("click", showStart);
+
+    showStart();
+  </script>
+</body>
+</html>
